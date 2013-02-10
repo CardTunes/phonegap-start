@@ -23,71 +23,58 @@
     <meta name="format-detection" content="telephone=no" />
     <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" />
-    <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
-    <script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
+  <!--  <script type="text/javascript" src="phonegap.js"></script>-->
+    <script type="text/javascript" src="js/index.js"></script>
+
     <link rel="stylesheet" type="text/css" href="css/index.css" />
     <title>Hello World</title>
 </head>
 <body>
     <div data-role="page" id="main">
         <div data-role="header">
-            <h1>
-                My Title</h1>
+            <h1>Categories</h1>
         </div>
         <!-- /header -->
-        <div data-role="content">   
-        
-         <!--            <li><a href="#">Acura</a></li>
-                <li><a href="#">Audi</a></li>
-                <li><a href="#">BMW</a></li>
-                <li><a href="#">Cadillac</a></li>
-                <li><a href="#">Ferrari</a></li>-->-->
-            <ul data-role="listview" data-inset="true" data-filter="true" id="categories">
-
-            </ul>
+        <div data-role="content">
+            <ul data-role="listview" data-inset="true" data-filter="true" id="categories" ></ul>
         </div>
         <!-- /content -->
     </div>
     <!-- /page -->
-    <!--    <div class="app">
-        <h1>
-            Dave's app</h1>
-        <div id="deviceready">
-            <p class="status pending blink">
-                Connecting to Device</p>
-            <p class="status complete blink hide">
-                Dave's Device is Ready</p>
-        </div>
-        <div class="custom">
-            My Stuff
-        </div>
-    </div>-->
 
-<!--
-    <script type="text/javascript" src="phonegap.js"></script>-->
-    <script type="text/javascript" charset="utf-8" src="js/phonegap-1.1.0.js"></script>
-    <script type="text/javascript" src="js/index.js"></script>
+    <div data-role="page" id="categoryItems">
+        <div data-role="header">
+            <h1>Items</h1>
+        </div>
+        <!-- /header -->
+        <div data-role="content">
+            <ul data-role="listview" data-inset="true" data-filter="true" id="Ul1" ></ul>
+        </div>
+        <!-- /content -->
+    </div>
+    <!-- /page -->
+
+</body>
+</html>
+
     <script type="text/javascript">
         app.initialize();
     </script>
      <script type="text/javascript">
          // Wait for PhoneGap to load
-         //
 
-
-   //      alert('starting');
- //        document.addEventListener("deviceready", onDeviceReady, false);
-
-//         function onDeviceReady() {
-//             alert('got here');
-//             var db = window.openDatabase("Database", "1.0", "PhoneGap Demo", 200000);
-//             db.transaction(populateDB, errorCB, successCB);
-//         }
-
+         var db;
          $(document).delegate("#main", "pageinit", function () {
-            alert('got here');
-            var db = window.openDatabase("Database", "1.0", "PhoneGap Demo", 200000);
-            db.transaction(populateDB, errorCB, successCB);
+             //alert('got here');
+             db = window.openDatabase("Database", "1.0", "PhoneGap Demo", 200000);
+             db.transaction(populateDB, errorCB, successCB);
+         });
+
+
+         $("#categories").bind("change", function (event, ui) {
+             $(this).listview("refresh");
          });
 
          function populateDB(tx) {
@@ -95,6 +82,12 @@
              tx.executeSql('CREATE TABLE  IF NOT EXISTS Category (id unique, name)');
              tx.executeSql('INSERT INTO Category (id, name) VALUES (1, "Shopping")');
              tx.executeSql('INSERT INTO Category (id, name) VALUES (2, "Purchases")');
+
+             tx.executeSql('DROP TABLE IF EXISTS CategoryItem');
+             tx.executeSql('CREATE TABLE IF NOT EXISTS CategoryItem (id unique, categoryId, name)');
+             tx.executeSql('INSERT INTO CategoryItem (categoryId, id, name) VALUES (1,1, "Beer")');
+             tx.executeSql('INSERT INTO CategoryItem (categoryId, id, name) VALUES (1,2, "Wine")');
+             
          }
 
          function queryDB(tx) {
@@ -108,11 +101,13 @@
              var ul = $("#categories");
              $(ul).empty();
              for (var i = 0; i < len; i++) {
-                 $(ul).append('<li><a href="#">' + results.rows.item(i).name + '</a></li>');  
-                
-             
-             }
+                 $(ul).append('<li><a href="#categoryItems">' + results.rows.item(i).name + '</a></li>');
+                 //$(ul).listview.trigger("refresh");
 
+             }
+             if($(ul).listview) {
+                 $(ul).listview("refresh");
+             }
          }
 
          function errorCB(err) {
@@ -120,14 +115,10 @@
          }
 
          function successCB() {
-             alert('yep');
-            var db = window.openDatabase("Database", "1.0", "PhoneGap Demo", 200000);
-            db.transaction(queryDB, errorCB);
+             //alert('yep');
+             //var db = window.openDatabase("Database", "1.0", "PhoneGap Demo", 200000);
+             db.transaction(queryDB, errorCB);
          }
 
  
      </script>
-
-
-</body>
-</html>
