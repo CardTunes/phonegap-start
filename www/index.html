@@ -33,7 +33,7 @@
 </head>
 <body>
     <div data-role="page" id="main">
-        <div data-role="header">
+        <div data-role="header" addBackBtn="true">
             <h1>Categories</h1>
         </div>
         <!-- /header -->
@@ -44,8 +44,8 @@
     </div>
     <!-- /page -->
 
-    <div data-role="page" id="categoryItems">
-        <div data-role="header">
+    <div data-role="page" id="categoryItems" data-add-back-btn="true" data-back-btn-text="Back">
+        <div data-role="header" addBackBtn="true">
             <h1>Items</h1>
         </div>
         <!-- /header -->
@@ -101,7 +101,7 @@
              var ul = $("#categories");
              $(ul).empty();
              for (var i = 0; i < len; i++) {
-                 $(ul).append('<li><a href="#categoryItems">' + results.rows.item(i).name + '</a></li>');
+                 $(ul).append('<li><a href="#categoryItems"  data-transition="slide">' + results.rows.item(i).name + '</a></li>');
                  //$(ul).listview.trigger("refresh");
 
              }
