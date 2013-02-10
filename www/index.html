@@ -29,7 +29,7 @@
     <title>Hello World</title>
 </head>
 <body>
-    <div data-role="page">
+    <div data-role="page" id="main">
         <div data-role="header">
             <h1>
                 My Title</h1>
@@ -73,14 +73,22 @@
      <script type="text/javascript">
          // Wait for PhoneGap to load
          //
-         alert('starting');
-         document.addEventListener("deviceready", onDeviceReady, false);
 
-         function onDeviceReady() {
-             alert('got here');
-             var db = window.openDatabase("Database", "1.0", "PhoneGap Demo", 200000);
-             db.transaction(populateDB, errorCB, successCB);
-         }
+
+   //      alert('starting');
+ //        document.addEventListener("deviceready", onDeviceReady, false);
+
+//         function onDeviceReady() {
+//             alert('got here');
+//             var db = window.openDatabase("Database", "1.0", "PhoneGap Demo", 200000);
+//             db.transaction(populateDB, errorCB, successCB);
+//         }
+
+         $(document).delegate("#main", "pageinit", function () {
+            alert('got here');
+            var db = window.openDatabase("Database", "1.0", "PhoneGap Demo", 200000);
+            db.transaction(populateDB, errorCB, successCB);
+         });
 
          function populateDB(tx) {
              tx.executeSql('DROP TABLE IF EXISTS Category');
