@@ -73,9 +73,11 @@
      <script type="text/javascript">
          // Wait for PhoneGap to load
          //
+         alert('starting');
          document.addEventListener("deviceready", onDeviceReady, false);
 
          function onDeviceReady() {
+             alert('got here');
              var db = window.openDatabase("Database", "1.0", "PhoneGap Demo", 200000);
              db.transaction(populateDB, errorCB, successCB);
          }
