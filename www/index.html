@@ -35,13 +35,15 @@
                 My Title</h1>
         </div>
         <!-- /header -->
-        <div data-role="content">
-            <ul data-role="listview" data-inset="true" data-filter="true">
-                <li><a href="#">Acura</a></li>
+        <div data-role="content">   
+        
+         <!--            <li><a href="#">Acura</a></li>
                 <li><a href="#">Audi</a></li>
                 <li><a href="#">BMW</a></li>
                 <li><a href="#">Cadillac</a></li>
-                <li><a href="#">Ferrari</a></li>
+                <li><a href="#">Ferrari</a></li>-->-->
+            <ul data-role="listview" data-inset="true" data-filter="true" id="categories">
+
             </ul>
         </div>
         <!-- /content -->
@@ -60,10 +62,61 @@
             My Stuff
         </div>
     </div>-->
-    <script type="text/javascript" src="phonegap.js"></script>
+
+<!--
+    <script type="text/javascript" src="phonegap.js"></script>-->
+    <script type="text/javascript" charset="utf-8" src="js/phonegap-1.1.0.js"></script>
     <script type="text/javascript" src="js/index.js"></script>
     <script type="text/javascript">
         app.initialize();
     </script>
+     <script type="text/javascript">
+         // Wait for PhoneGap to load
+         //
+         document.addEventListener("deviceready", onDeviceReady, false);
+
+         function onDeviceReady() {
+             var db = window.openDatabase("Database", "1.0", "PhoneGap Demo", 200000);
+             db.transaction(populateDB, errorCB, successCB);
+         }
+
+         function populateDB(tx) {
+             tx.executeSql('DROP TABLE IF EXISTS Category');
+             tx.executeSql('CREATE TABLE  IF NOT EXISTS Category (id unique, name)');
+             tx.executeSql('INSERT INTO Category (id, name) VALUES (1, "Shopping")');
+             tx.executeSql('INSERT INTO Category (id, name) VALUES (2, "Purchases")');
+         }
+
+         function queryDB(tx) {
+             tx.executeSql('SELECT * FROM Category', [], querySuccess, errorCB);
+         }
+
+         // Query the success callback
+         //
+         function querySuccess(tx, results) {
+             var len = results.rows.length;
+             var ul = $("#categories");
+             $(ul).empty();
+             for (var i = 0; i < len; i++) {
+                 $(ul).append('<li><a href="#">' + results.rows.item(i).name + '</a></li>');  
+                
+             
+             }
+
+         }
+
+         function errorCB(err) {
+             alert("Error processing SQL: " + err);
+         }
+
+         function successCB() {
+            var db = window.openDatabase("Database", "1.0", "PhoneGap Demo", 200000);
+            db.transaction(queryDB, errorCB);
+         }
+
+ 
+     </script>
+
+
 </body>
 </html>
