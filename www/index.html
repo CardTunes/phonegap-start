@@ -23,6 +23,8 @@
     <meta name="format-detection" content="telephone=no" />
     <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" />
+    
+    <script type="text/javascript" src="js/energize-min.js"></script>
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
     <script type="text/javascript" src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
   <!--  <script type="text/javascript" src="phonegap.js"></script>-->
@@ -39,6 +41,13 @@
         <!-- /header -->
         <div data-role="content">
             <ul data-role="listview" data-inset="true" data-filter="true" id="categories" ></ul>
+            <ul data-role="listview" data-inset="true" data-filter="true">
+	            <li><a href="#categoryItems" data-transition="slide">Acura</a></li>
+	            <li><a href="#categoryItems" data-transition="slide">Audi</a></li>
+	            <li><a href="#categoryItems" data-transition="slide">>BMW</a></li>
+	            <li><a href="#categoryItems" data-transition="slide">>Cadillac</a></li>
+	            <li><a href="#categoryItems" data-transition="slide">>Ferrari</a></li>
+            </ul>
         </div>
         <!-- /content -->
     </div>
@@ -65,60 +74,60 @@
      <script type="text/javascript">
          // Wait for PhoneGap to load
 
-         var db;
-         $(document).delegate("#main", "pageinit", function () {
-             //alert('got here');
-             db = window.openDatabase("Database", "1.0", "PhoneGap Demo", 200000);
-             db.transaction(populateDB, errorCB, successCB);
-         });
+//         var db;
+//         $(document).delegate("#main", "pageinit", function () {
+//             //alert('got here');
+//             db = window.openDatabase("Database", "1.0", "PhoneGap Demo", 200000);
+//             db.transaction(populateDB, errorCB, successCB);
+//         });
 
 
-         $("#categories").bind("change", function (event, ui) {
-             $(this).listview("refresh");
-         });
+//         $("#categories").bind("change", function (event, ui) {
+//             $(this).listview("refresh");
+//         });
 
-         function populateDB(tx) {
-             tx.executeSql('DROP TABLE IF EXISTS Category');
-             tx.executeSql('CREATE TABLE  IF NOT EXISTS Category (id unique, name)');
-             tx.executeSql('INSERT INTO Category (id, name) VALUES (1, "Shopping")');
-             tx.executeSql('INSERT INTO Category (id, name) VALUES (2, "Purchases")');
+//         function populateDB(tx) {
+//             tx.executeSql('DROP TABLE IF EXISTS Category');
+//             tx.executeSql('CREATE TABLE  IF NOT EXISTS Category (id unique, name)');
+//             tx.executeSql('INSERT INTO Category (id, name) VALUES (1, "Shopping")');
+//             tx.executeSql('INSERT INTO Category (id, name) VALUES (2, "Purchases")');
 
-             tx.executeSql('DROP TABLE IF EXISTS CategoryItem');
-             tx.executeSql('CREATE TABLE IF NOT EXISTS CategoryItem (id unique, categoryId, name)');
-             tx.executeSql('INSERT INTO CategoryItem (categoryId, id, name) VALUES (1,1, "Beer")');
-             tx.executeSql('INSERT INTO CategoryItem (categoryId, id, name) VALUES (1,2, "Wine")');
-             
-         }
+//             tx.executeSql('DROP TABLE IF EXISTS CategoryItem');
+//             tx.executeSql('CREATE TABLE IF NOT EXISTS CategoryItem (id unique, categoryId, name)');
+//             tx.executeSql('INSERT INTO CategoryItem (categoryId, id, name) VALUES (1,1, "Beer")');
+//             tx.executeSql('INSERT INTO CategoryItem (categoryId, id, name) VALUES (1,2, "Wine")');
+//             
+//         }
 
-         function queryDB(tx) {
-             tx.executeSql('SELECT * FROM Category', [], querySuccess, errorCB);
-         }
+//         function queryDB(tx) {
+//             tx.executeSql('SELECT * FROM Category', [], querySuccess, errorCB);
+//         }
 
-         // Query the success callback
-         //
-         function querySuccess(tx, results) {
-             var len = results.rows.length;
-             var ul = $("#categories");
-             $(ul).empty();
-             for (var i = 0; i < len; i++) {
-                 $(ul).append('<li><a href="#categoryItems"  data-transition="slide">' + results.rows.item(i).name + '</a></li>');
-                 //$(ul).listview.trigger("refresh");
+//         // Query the success callback
+//         //
+//         function querySuccess(tx, results) {
+//             var len = results.rows.length;
+//             var ul = $("#categories");
+//             $(ul).empty();
+//             for (var i = 0; i < len; i++) {
+//                 $(ul).append('<li><a href="#categoryItems"  data-transition="slide">' + results.rows.item(i).name + '</a></li>');
+//                 //$(ul).listview.trigger("refresh");
 
-             }
-             if($(ul).listview) {
-                 $(ul).listview("refresh");
-             }
-         }
+//             }
+//             if($(ul).listview) {
+//                 $(ul).listview("refresh");
+//             }
+//         }
 
-         function errorCB(err) {
-             alert("Error processing SQL: " + err);
-         }
+//         function errorCB(err) {
+//             alert("Error processing SQL: " + err);
+//         }
 
-         function successCB() {
-             //alert('yep');
-             //var db = window.openDatabase("Database", "1.0", "PhoneGap Demo", 200000);
-             db.transaction(queryDB, errorCB);
-         }
+//         function successCB() {
+//             //alert('yep');
+//             //var db = window.openDatabase("Database", "1.0", "PhoneGap Demo", 200000);
+//             db.transaction(queryDB, errorCB);
+//         }
 
  
      </script>
